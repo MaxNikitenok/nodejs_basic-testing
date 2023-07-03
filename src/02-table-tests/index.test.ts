@@ -1,17 +1,39 @@
-// Uncomment the code below and write your tests
-/* import {  simpleCalculator, Action } from './index';
-
-const testCases = [
-    { a: 1, b: 2, action: Action.Add, expected: 3 },
-    { a: 2, b: 2, action: Action.Add, expected: 4 },
-    { a: 3, b: 2, action: Action.Add, expected: 5 },
-    // continue cases for other actions    
-]; */
+import { simpleCalculator, Action } from './index';
 
 describe('simpleCalculator', () => {
-  // This test case is just to run this test suite, remove it when you write your own tests
-  test('should blah-blah', () => {
-    expect(true).toBe(true);
-  });
-  // Consider to use Jest table tests API to test all cases above
+  test.each`
+    a       | b            | action                 | expected
+    ${1}    | ${2}         | ${Action.Add}          | ${3}
+    ${2}    | ${2}         | ${Action.Add}          | ${4}
+    ${3}    | ${2}         | ${Action.Add}          | ${5}
+    ${1}    | ${2}         | ${Action.Subtract}     | ${-1}
+    ${2}    | ${2}         | ${Action.Subtract}     | ${0}
+    ${3}    | ${2}         | ${Action.Subtract}     | ${1}
+    ${1}    | ${2}         | ${Action.Multiply}     | ${2}
+    ${2}    | ${2}         | ${Action.Multiply}     | ${4}
+    ${3}    | ${2}         | ${Action.Multiply}     | ${6}
+    ${2}    | ${2}         | ${Action.Divide}       | ${1}
+    ${1}    | ${2}         | ${Action.Divide}       | ${0.5}
+    ${3}    | ${2}         | ${Action.Divide}       | ${1.5}
+    ${1}    | ${1}         | ${Action.Exponentiate} | ${1}
+    ${2}    | ${2}         | ${Action.Exponentiate} | ${4}
+    ${3}    | ${3}         | ${Action.Exponentiate} | ${27}
+    ${1}    | ${'2'}       | ${Action.Exponentiate} | ${null}
+    ${2}    | ${2}         | ${'someAction'}        | ${null}
+    ${3}    | ${2}         | ${null}                | ${null}
+    ${1}    | ${2}         | ${undefined}           | ${null}
+    ${null} | ${2}         | ${Action.Add}          | ${null}
+    ${3}    | ${undefined} | ${Action.Add}          | ${null}
+  `(
+    'calculate($a, $b) should return $expected',
+    ({ a, b, action, expected }) => {
+      const result = simpleCalculator({
+        a: a,
+        b: b,
+        action: action,
+      });
+      expect(result).toBe(expected);
+    },
+  );
 });
+// Consider to use Jest table tests API to test all cases above
